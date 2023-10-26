@@ -3,30 +3,31 @@ package com.test.todoapp.ui.list
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.test.todoapp.databinding.ItemTodoBinding
-import com.test.todoapp.room.ToDo
+import com.test.todoapp.data.ToDo
 import javax.inject.Inject
 
 class ToDoAdapter @Inject constructor() :
     ListAdapter<ToDo, ToDoAdapter.ToDoViewHolder>(COMPARATOR) {
 
-    private var itemUpdateCallback: ((pos: Int) -> Unit)? = null
-    private var itemLongPress: ((pos: Int) -> Unit)? = null
-    private var itemClick: ((pos: Int) -> Unit)? = null
+    private var itemCheckCallback: ((pos: Int) -> Unit)? = null
+    private var itemDeleteCallback: ((pos: Int) -> Unit)? = null
+    private var itemEditCallback: ((pos: Int) -> Unit)? = null
 
-    fun setUpdateCompleted(item: (pos: Int) -> Unit) = apply {
-        this.itemUpdateCallback = item
+    fun setOnCheckItem(item: (pos: Int) -> Unit) = apply {
+        this.itemCheckCallback = item
     }
 
-    fun setOnItemClick(item: (pos: Int) -> Unit) = apply {
-        this.itemClick = item
+    fun setOnEditItem(item: (pos: Int) -> Unit) = apply {
+        this.itemEditCallback = item
     }
 
-    fun setOnLongPressed(item: (pos: Int) -> Unit) = apply {
-        this.itemLongPress = item
+    fun setOnDeleteItem(item: (pos: Int) -> Unit) = apply {
+        this.itemDeleteCallback = item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoViewHolder {
@@ -45,13 +46,13 @@ class ToDoAdapter @Inject constructor() :
 
         init {
             binding.ivCheck.setOnClickListener {
-                itemUpdateCallback?.invoke(adapterPosition)
+                itemCheckCallback?.invoke(adapterPosition)
             }
-            binding.roots.setOnClickListener {
-                itemClick?.invoke(adapterPosition)
+            binding.ivEdit.setOnClickListener {
+                itemEditCallback?.invoke(adapterPosition)
             }
-            binding.roots.setOnLongClickListener {
-                itemLongPress?.invoke(adapterPosition)
+            binding.ivDelete.setOnClickListener {
+                itemDeleteCallback?.invoke(adapterPosition)
                 true
             }
         }
@@ -59,8 +60,9 @@ class ToDoAdapter @Inject constructor() :
         fun bindItem(data: ToDo) {
             binding.apply {
                 tvTask.text = data.task
-                root.isSelected = data.isCompleted
                 isCompleted = data.isCompleted
+                ivEdit.isVisible = !data.isCompleted
+                tvIsUpdated.isVisible = data.isUpdated
                 if (data.isCompleted) {
                     tvTask.paintFlags = tvTask.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 } else {

@@ -9,7 +9,7 @@
         android:id="@+id/toDoListFragment"
         android:name="com.test.todoapp.ui.list.ToDoListFragment"
         tools:layout="@layout/fragment_to_do_list"
-        android:label="ToDoListFragment" >
+        android:label="TODO" >
 
         <action
             android:id="@+id/action_toDoListFragment_to_createToDoFragment"
@@ -21,12 +21,16 @@
         android:id="@+id/createToDoFragment"
         android:name="com.test.todoapp.ui.create.CreateToDoFragment"
         tools:layout="@layout/fragment_to_do_list"
-        android:label="CreateToDoFragment" >
+        android:label="{title}" >
 
         <argument
             android:name="item"
-            app:argType="com.test.todoapp.room.ToDo"
+            app:argType="com.test.todoapp.data.ToDo"
             app:nullable="true" />
+
+        <argument
+            android:name="title"
+            app:argType="string" />
 
     </fragment>
 

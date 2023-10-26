@@ -1,11 +1,11 @@
 package com.test.todoapp.ui.create
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.todoapp.repo.CreateToDoRepo
-import com.test.todoapp.repo.CreateToDoRepoImpl
 import com.test.todoapp.repo.GetToDoRepo
-import com.test.todoapp.room.ToDo
+import com.test.todoapp.data.ToDo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,23 +22,29 @@ class CreateViewModel @Inject constructor(
     val create: SharedFlow<Boolean> = _create
 
     val update: MutableSharedFlow<Boolean> = MutableSharedFlow()
+    var cacheToDo: ToDo? = null
 
-    fun createToDo(toDo: ToDo) {
+    fun createToDo(toDo: ToDo, allowToDuplicate: Boolean = false) {
         viewModelScope.launch {
             try {
-                repo.create(toDo)
+                if (!allowToDuplicate) {
+                    repo.create(toDo)
+                } else {
+                    repo.createWithDuplicate(toDo)
+                }
                 _create.emit(true)
             } catch (e: Exception) {
+                e.printStackTrace()
                 _create.emit(false)
             }
-
         }
     }
 
     fun update(toDo: ToDo) {
+        cacheToDo = toDo
         viewModelScope.launch {
-            repo2.update(toDo)
-            update.emit(true)
+            val updated = repo2.update(toDo)
+            update.emit(updated)
         }
     }
 }

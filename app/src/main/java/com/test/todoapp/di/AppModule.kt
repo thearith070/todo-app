@@ -20,7 +20,7 @@ class AppModule {
     fun provideDBApp(@ApplicationContext context: Context): AppDatabase =
         Room.databaseBuilder(
             context,
-            AppDatabase::class.java, "todo_db"
+            AppDatabase::class.java, "todo.db"
         ).allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()

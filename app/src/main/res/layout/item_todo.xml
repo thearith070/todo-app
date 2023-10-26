@@ -9,13 +9,12 @@
             type="Boolean" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/roots"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
-        android:background="@drawable/selector"
-        android:orientation="horizontal"
+        android:background="@drawable/bg_rounded"
         android:padding="16dp">
 
         <ImageView
@@ -27,7 +26,7 @@
             android:src="@{isCompleted ? @drawable/ic_baseline_check_box_24 : @drawable/ic_uncheck, default = @drawable/ic_uncheck}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_task" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_task"
@@ -38,8 +37,42 @@
             android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@id/iv_check"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Task name" />
 
-    </LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_is_updated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textSize="10sp"
+            android:text="Edited"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toEndOf="@id/iv_check"
+            app:layout_constraintTop_toBottomOf="@id/tv_task" />
+
+        <ImageView
+            android:id="@+id/iv_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/baseline_mode_edit_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_delete"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_delete_forever_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

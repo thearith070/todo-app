@@ -1,7 +1,8 @@
-package com.test.todoapp.room
+package com.test.todoapp.data
 
 import android.os.Parcelable
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
@@ -14,6 +15,8 @@ data class ToDo(
     val task: String,
 
     val description: String? = null,
+
+    var isUpdated: Boolean = false,
 
     var isCompleted: Boolean = false
 ): Parcelable
